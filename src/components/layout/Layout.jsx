@@ -4,7 +4,7 @@ import {
     MenuFoldOutlined,
     MenuUnfoldOutlined,
 } from '@ant-design/icons';
-import { Button, Layout, Menu, message, Popconfirm, Select, theme } from 'antd';
+import { Button, Layout, Menu, message, Modal, Popconfirm, Select, theme } from 'antd';
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
 import { BsGlobe2 } from 'react-icons/bs';
 import { GoPeople } from 'react-icons/go';
@@ -23,14 +23,27 @@ const LayoutAdmin = () => {
     const [messageApi] = message.useMessage();
     const navigate = useNavigate();
 
-    const confirmLogout = () => {
-        messageApi.success("Logout successful!");
-        navigate("/");  
-        toast.success("Tizimdan muvaffaqiyatli chiqildi")
-    };
+   
 
-    const cancelLogout = () => {
-        messageApi.error("Logout canceled!");
+    const [open, setOpen] = useState(false);
+    const [confirmLoading, setConfirmLoading] = useState(false);
+    const [modalText, setModalText] = useState('Content of the modal');
+    const showModal = () => {
+        setOpen(true);
+    };
+    const handleOk = () => {
+        setModalText('The modal will be closed after two seconds');
+        setConfirmLoading(true);
+        navigate("/");
+        toast.success("Tizimdan muvaffaqiyatli chiqildi")
+        setTimeout(() => {
+            setOpen(false);
+            setConfirmLoading(false);
+        }, 2000);
+    };
+    const handleCancel = () => {
+        console.log('Clicked cancel button');
+        setOpen(false);
         toast.warning("Logout bekor qilindi", {
             position: "top-right",
             autoClose: 2500,
@@ -108,21 +121,21 @@ const LayoutAdmin = () => {
                             ]}
                         />
 
-                        <Popconfirm
-                            placement="leftTop"
+                        <Button
+                        onClick={showModal}
+                            type="primary"
+                            icon={<LogoutOutlined />}
+                            style={{ display: "flex", alignItems: "center" }}
+                        />
+                        <Modal
                             title="Confirmation"
-                            description="Are you sure you want to logout?"
-                            onConfirm={confirmLogout}
-                            onCancel={cancelLogout}
-                            okText="Yes"
-                            cancelText="No"
+                            open={open}
+                            onOk={handleOk}
+                            confirmLoading={confirmLoading}
+                            onCancel={handleCancel}
                         >
-                            <Button
-                                type="primary"
-                                icon={<LogoutOutlined />}
-                                style={{ display: "flex", alignItems: "center" }}
-                            />
-                        </Popconfirm>
+                            <p>Are you sure you want to log out?</p>
+                        </Modal>
                     </div>
                 </Header>
 
