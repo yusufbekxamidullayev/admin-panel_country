@@ -62,7 +62,7 @@ const CountriesPage = () => {
             "Authorization": `Bearer ${token}`
           }
         })
-        toast.success("Countries tahrirlandi")
+        toast.success("Countries tahrirlandi ")
       }else{
         await axios.post(`https://v1.turbotravel.uz/api/countries`, formdata, {
           headers: {
@@ -178,11 +178,9 @@ const CountriesPage = () => {
           Add Category
         </Button>
         <Modal
-          title={<p>Add Category</p>}
+          title={<p>Category</p>}
           footer={
-            <Button type="primary" onClick={showLoading}>
-              Reload
-            </Button>
+            []
           }
           loading={loading}
           open={open}
@@ -236,7 +234,6 @@ const CountriesPage = () => {
               label="Upload"
               valuePropName="fileList"
               getValueFromEvent={normFile}
-              extra="longgggggggggggggggggggggggggggggggggg"
             >
               <Upload name="logo" action="/upload.do" listType="picture">
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
@@ -244,7 +241,7 @@ const CountriesPage = () => {
             </Form.Item>
             <Form.Item label={null}>
               <Button type="primary" htmlType="submit" block>
-                Add
+                Submit
               </Button>
             </Form.Item>
           </Form>
